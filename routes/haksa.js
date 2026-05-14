@@ -145,6 +145,21 @@ router.post('/stu/insert', async function(req, res){
         if(con) await con.close();
     }
 });
+
+router.post('/stu/delete', async function(req,res){
+    const scode =req.body.scode;
+    let con;
+    try{
+        con= await getConnection();
+        let sql ="delete from students where scode=:scode";
+        await con.execute(sql,{scode},{autoCommit:true});
+        res.sendStatus(200);
+    }catch(err){
+        res.sendStatus(500);
+    }finally{
+        if(con) await con.close();
+    }
+});
 /* 강좌페이지이동 */
 router.get('/cou', function (req, res, next) {
     res.render('index', { title: '강좌관리', pageName: 'haksa/courses.ejs' });
